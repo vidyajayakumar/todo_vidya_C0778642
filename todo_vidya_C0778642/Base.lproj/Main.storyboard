@@ -35,8 +35,11 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B8K-pq-2HS">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="61.5"/>
                                                             <subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjQ-AN-1zU">
+                                                                    <rect key="frame" x="16" y="8" width="39.5" height="22"/>
+                                                                </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="179" translatesAutoresizingMaskIntoConstraints="NO" id="eYD-CJ-DU6">
-                                                                    <rect key="frame" x="51.5" y="0.0" width="315.5" height="20.5"/>
+                                                                    <rect key="frame" x="59.5" y="8" width="315.5" height="20.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJ2-Op-idq">
                                                                             <rect key="frame" x="0.0" y="0.0" width="82" height="20.5"/>
@@ -55,27 +58,26 @@
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="eYD-CJ-DU6" secondAttribute="trailing" constant="8" id="FXi-Tm-HSi"/>
-                                                                <constraint firstItem="eYD-CJ-DU6" firstAttribute="top" secondItem="B8K-pq-2HS" secondAttribute="top" id="P3l-IF-LbZ"/>
-                                                                <constraint firstItem="eYD-CJ-DU6" firstAttribute="top" secondItem="B8K-pq-2HS" secondAttribute="top" id="vUl-4f-qAA"/>
+                                                                <constraint firstItem="eYD-CJ-DU6" firstAttribute="top" secondItem="B8K-pq-2HS" secondAttribute="topMargin" id="2sF-RU-POj"/>
+                                                                <constraint firstItem="eYD-CJ-DU6" firstAttribute="trailing" secondItem="B8K-pq-2HS" secondAttribute="trailingMargin" constant="8" id="6io-uw-9Mx"/>
+                                                                <constraint firstItem="yjQ-AN-1zU" firstAttribute="top" secondItem="B8K-pq-2HS" secondAttribute="topMargin" id="8rU-o1-m5O"/>
+                                                                <constraint firstItem="eYD-CJ-DU6" firstAttribute="leading" secondItem="yjQ-AN-1zU" secondAttribute="trailing" constant="4" id="ClD-Wv-FST"/>
+                                                                <constraint firstItem="yjQ-AN-1zU" firstAttribute="leading" secondItem="B8K-pq-2HS" secondAttribute="leadingMargin" constant="8" id="fyN-DY-tER"/>
                                                             </constraints>
                                                         </view>
-                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjQ-AN-1zU">
-                                                            <rect key="frame" x="8" y="0.0" width="46" height="20"/>
-                                                            <state key="normal" title="DOT"/>
-                                                        </button>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="B8K-pq-2HS" firstAttribute="leading" secondItem="3mc-Kd-Gur" secondAttribute="leading" id="0qg-KI-iSk"/>
                                                         <constraint firstAttribute="trailing" secondItem="B8K-pq-2HS" secondAttribute="trailing" id="5FO-X9-dR9"/>
-                                                        <constraint firstItem="yjQ-AN-1zU" firstAttribute="leading" secondItem="3mc-Kd-Gur" secondAttribute="leading" constant="8" id="9VG-U6-QlB"/>
                                                         <constraint firstItem="B8K-pq-2HS" firstAttribute="top" secondItem="3mc-Kd-Gur" secondAttribute="top" id="E6K-Uc-M4S"/>
-                                                        <constraint firstItem="yjQ-AN-1zU" firstAttribute="top" secondItem="3mc-Kd-Gur" secondAttribute="top" id="Nsa-Z2-M8f"/>
                                                         <constraint firstAttribute="bottom" secondItem="B8K-pq-2HS" secondAttribute="bottom" id="PDj-Le-mMc"/>
-                                                        <constraint firstItem="yjQ-AN-1zU" firstAttribute="top" secondItem="3mc-Kd-Gur" secondAttribute="top" id="Z4F-et-kqs"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="shadowView" destination="B8K-pq-2HS" id="OIh-MO-79F"/>
+                                                    <outlet property="taskDoneButton" destination="yjQ-AN-1zU" id="kh6-tz-7Wa"/>
+                                                    <outlet property="taskNamelabel" destination="oJ2-Op-idq" id="mt1-lF-u3R"/>
+                                                    <outlet property="taskPriorityLabel" destination="5G8-QY-65P" id="f9C-XZ-IEr"/>
                                                     <segue destination="Qjg-gP-7ZV" kind="show" identifier="ShowDetails" id="WnK-eJ-BCC"/>
                                                 </connections>
                                             </tableViewCell>
