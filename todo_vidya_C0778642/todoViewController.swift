@@ -15,7 +15,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     @IBOutlet weak var taskNotifySwitch: UISwitch!
     @IBOutlet weak var taskPrioritySegment: UISegmentedControl!
     @IBOutlet weak var taskAddButton: UIButton!
-  
+    @IBOutlet weak var taskCategoryLabel: UILabel!
+    
     
     var tasksFetchedResultsController: NSFetchedResultsController<Task>!
     var tasks = [Task]()
@@ -35,6 +36,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     let formatter = DateFormatter()
     var currDateTime : Date?
     let currentDateTime = Date()
+    var taskCatSelected: String = "Others"
     
     let defaults = UserDefaults.standard
     struct keys {
@@ -59,6 +61,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             taskDescriptionLabel.text = task.taskDesc
             taskDateLabel.text = task.taskDate
             taskNotifySwitch.isOn = task.taskNotify
+            taskCategoryLabel.text = task.taskCat
             
             if(task.taskPriority == "High")
             {   taskPrioritySegment.selectedSegmentIndex = 0
@@ -69,7 +72,6 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             }
             let date: String = String(task.taskDate!)
             let temp = stringToDate(dateString: date)
-            
             let timePicker = taskDatePicker
             timePicker?.setDate(temp, animated: true)
 
@@ -94,8 +96,9 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         
         
         // Uderdefaults Category save array
-        let taskCat = ["Work", "School","Shopping","Bucket List","Personal","Others","Archived"]
+        let taskCat = ["Work", "School","Shopping","Bucket List","Personal","Others"]
         defaults.set(taskCat,forKey: keys.taskCatList)
+        print(taskCat)
         
         // retrieve Userdefaults
 //        let defaults = UserDefaults.standard
@@ -174,7 +177,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         } else{
             taskNotify = false
         }
-        print("taskNotidy :", taskNotify)
+        print("taskNotify :", taskNotify)
     }
     
     //notidy switch end
@@ -182,9 +185,56 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     //Category select
     
-//    for (let i=0; i<cat; <#increment#>) {
-//    <#statements#>
-//    }
+    @IBAction func taskSelCategoryButton(_ sender: UIBarButtonItem) {
+        taskSelCat()
+    }
+    
+     //retrieve Userdefaults
+    func taskSelCat(){
+        let taskCat  =  defaults.stringArray(forKey: keys.taskCatList)!
+        let categoryController = UIAlertController(title: "Select Category", message: "", preferredStyle: .actionSheet)
+        for var i in taskCat
+        {   let action = UIAlertAction(title: "\(i)", style: .default) { (action) in
+            self.taskCatSelect(taskCategory: action.title!)}
+            categoryController.addAction(action)
+            print(i)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        categoryController.addAction(cancelAction)
+        present(categoryController, animated: true, completion: nil)
+        /*
+         let catPersonal = UIAlertAction(title: "Personal", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Personal")}
+         let catWork = UIAlertAction(title: "Work", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Work")}
+         let catShopping = UIAlertAction(title: "Shopping", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Shopping")}
+         let catSchool = UIAlertAction(title: "School", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "School")}
+         let catBucketList = UIAlertAction(title: "BucketList", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Bucket List")}
+         let catImportant = UIAlertAction(title: "Important", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Important")}
+         let catOthers = UIAlertAction(title: "Others", style: .default) { (action) in
+         self.taskCatSelect(taskCategory: "Others")}
+         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+         categoryController.addAction(catWork)
+         categoryController.addAction(catSchool)
+         categoryController.addAction(catShopping)
+         categoryController.addAction(catBucketList)
+         categoryController.addAction(catPersonal)
+         categoryController.addAction(catImportant)
+         categoryController.addAction(catOthers)
+         categoryController.addAction(cancelAction)
+         present(categoryController, animated: true, completion: nil)
+ */
+    }
+    
+    func taskCatSelect(taskCategory: String){
+        taskCategoryLabel.text = taskCategory
+        taskCatSelected = taskCategory
+        print(taskCategory)
+    }
     //Category Selected
     
     
@@ -236,7 +286,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     task.taskDate       = taskDateTime
                     task.taskNotify     = taskNotify
                     task.taskDone       = taskDone
-//                    task.taskCategory = taskCatSelected
+                    task.taskCat        = taskCatSelected
                     
                     saveToCoreData() {
                         
@@ -262,6 +312,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                 managedObject!.setValue(taskDateTime, forKey: "taskDate")
                 managedObject!.setValue(taskPriority, forKey: "taskPriority")
                 managedObject!.setValue(taskNotify, forKey: "taskNotify")
+                 managedObject!.setValue(taskCatSelected, forKey: "taskCat")
                 
                 do {
                     try context.save()
@@ -282,7 +333,6 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         }
     }
     // Addtask Button ====
-    
     
     @IBAction func cancelTaskButton(_ sender: Any) {
         let isPresentingInAddFluidPatientMode = presentingViewController is UINavigationController
@@ -306,10 +356,18 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     // Show DatePicker
     @IBAction func ShowDatePicker(_ sender: UITapGestureRecognizer) {
         taskDatePicker.isHidden = false
+        
+    }
+    @objc func showPicker(){
+        taskDatePicker.isHidden = false
         i+=1
         print("Tapped: ", i)
     }
-    
+    func gesture(){
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showPicker))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
     // shown
     
     

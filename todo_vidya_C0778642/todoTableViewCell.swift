@@ -5,15 +5,11 @@ import UIKit
 class todoTableViewCell: UITableViewCell {
     
     
-//    @IBOutlet weak var taskNamelabel: UILabel!
-//    @IBOutlet weak var taskPriorityLabel: UILabel!
-//    @IBOutlet weak var taskDoneButton: UIButton!
-//    @IBOutlet weak var shadowView: UIView!
+    let currentDateTime = Date()
     
     
     @IBOutlet weak var taskNameLabel: UILabel!
     @IBOutlet weak var taskPriorityLabel: UILabel!
-    @IBOutlet weak var taskDoneButton: UIButton!
     @IBOutlet weak var shadowView: UIView!
     
     
@@ -25,7 +21,11 @@ class todoTableViewCell: UITableViewCell {
 //        shadowView.layer.shadowOffset = CGSize(width: 0.75, height: 0.75)
 //        shadowView.layer.shadowRadius = 1.5
 //        shadowView.layer.shadowOpacity = 0.2
-//        shadowView.layer.cornerRadius = 2
+        shadowView.layer.cornerRadius = 2
+        taskPriorityLabel.layer.cornerRadius = 30
+//        taskPriorityLabel.layer.backgroundColor = UIColor.red.cgColor
+        
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,25 +34,50 @@ class todoTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    // Date
+    func gettaskDate(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let myString = formatter.string(from: date)
+        let yourDate = formatter.date(from: myString)
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        let taskDate = formatter.string(from: yourDate!)
+        print("datetimePicker: ",taskDate)
+        return taskDate
+    }
+    
+    func stringToDate(dateString : String) -> Date{
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        return formatter.date(from: dateString)!
+    }
+    //Date end
+    
+    
+    
+    
+    
     func configureCell(task: Task) {
         
         self.taskNameLabel.text = task.taskName
-        //        self.taskDescriptionLabel.text = task.noteDescription
-        //        self.noteImageView.image = UIImage(data: note.noteImage! as Data)
-        self.taskDoneButton.titleLabel?.text = String(task.taskDone)
-        self.taskPriorityLabel.text = task.taskPriority
-        
-        
-        //TODO: add a notification On button
+//        self.taskDoneButton.titleLabel?.text = String(task.taskDone)
+//        self.taskPriorityLabel.text = task.taskPriority
         
         
         if(task.taskPriority == "High")
         {
-            self.taskPriorityLabel.textColor = UIColor.red
+            self.taskPriorityLabel.layer.backgroundColor = UIColor.red.cgColor
         } else if(task.taskPriority == "Normal"){
-            self.taskPriorityLabel.textColor = UIColor.green
+            self.taskPriorityLabel.layer.backgroundColor = UIColor.green.cgColor
         }else{
-            self.taskPriorityLabel.textColor = UIColor.blue
+            self.taskPriorityLabel.layer.backgroundColor = UIColor.blue.cgColor
+        }
+        
+        let due = stringToDate(dateString: task.taskDate!)
+        let currDate = stringToDate(dateString: gettaskDate(date: currentDateTime))
+        if due<currDate
+        {
+            shadowView.layer.backgroundColor = UIColor.red.cgColor
         }
         
     }
