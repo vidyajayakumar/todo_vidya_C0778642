@@ -10,8 +10,8 @@
 		A744E12324A9EB850083907A /* todoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E12224A9EB850083907A /* todoTableViewCell.swift */; };
 		A744E12524A9EEDD0083907A /* todoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E12424A9EEDD0083907A /* todoViewController.swift */; };
 		A744E12724AA16BB0083907A /* todoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E12624AA16BB0083907A /* todoTableViewController.swift */; };
+		A744E12924AA38460083907A /* taskDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E12824AA38460083907A /* taskDateExtension.swift */; };
 		A74CB3B224A9045300698145 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CB3B124A9045300698145 /* AppDelegate.swift */; };
-		A74CB3B424A9045300698145 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CB3B324A9045300698145 /* ViewController.swift */; };
 		A74CB3B724A9045300698145 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74CB3B524A9045300698145 /* Main.storyboard */; };
 		A74CB3BA24A9045300698145 /* todo_vidya_C0778642.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A74CB3B824A9045300698145 /* todo_vidya_C0778642.xcdatamodeld */; };
 		A74CB3BC24A9045500698145 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A74CB3BB24A9045500698145 /* Assets.xcassets */; };
@@ -22,9 +22,9 @@
 		A744E12224A9EB850083907A /* todoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todoTableViewCell.swift; sourceTree = "<group>"; };
 		A744E12424A9EEDD0083907A /* todoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todoViewController.swift; sourceTree = "<group>"; };
 		A744E12624AA16BB0083907A /* todoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todoTableViewController.swift; sourceTree = "<group>"; };
+		A744E12824AA38460083907A /* taskDateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = taskDateExtension.swift; sourceTree = "<group>"; };
 		A74CB3AE24A9045300698145 /* todo_vidya_C0778642.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_vidya_C0778642.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A74CB3B124A9045300698145 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A74CB3B324A9045300698145 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A74CB3B624A9045300698145 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A74CB3B924A9045300698145 /* todo_vidya_C0778642.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = todo_vidya_C0778642.xcdatamodel; sourceTree = "<group>"; };
 		A74CB3BB24A9045500698145 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -63,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				A74CB3B124A9045300698145 /* AppDelegate.swift */,
-				A74CB3B324A9045300698145 /* ViewController.swift */,
 				A744E12224A9EB850083907A /* todoTableViewCell.swift */,
 				A744E12424A9EEDD0083907A /* todoViewController.swift */,
 				A744E12624AA16BB0083907A /* todoTableViewController.swift */,
@@ -72,6 +71,7 @@
 				A74CB3BD24A9045500698145 /* LaunchScreen.storyboard */,
 				A74CB3C024A9045500698145 /* Info.plist */,
 				A74CB3B824A9045300698145 /* todo_vidya_C0778642.xcdatamodeld */,
+				A744E12824AA38460083907A /* taskDateExtension.swift */,
 			);
 			path = todo_vidya_C0778642;
 			sourceTree = "<group>";
@@ -147,9 +147,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A744E12924AA38460083907A /* taskDateExtension.swift in Sources */,
 				A744E12524A9EEDD0083907A /* todoViewController.swift in Sources */,
 				A744E12724AA16BB0083907A /* todoTableViewController.swift in Sources */,
-				A74CB3B424A9045300698145 /* ViewController.swift in Sources */,
 				A74CB3B224A9045300698145 /* AppDelegate.swift in Sources */,
 				A74CB3BA24A9045300698145 /* todo_vidya_C0778642.xcdatamodeld in Sources */,
 				A744E12324A9EB850083907A /* todoTableViewCell.swift in Sources */,

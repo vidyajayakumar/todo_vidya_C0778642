@@ -27,25 +27,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K26-PI-QLN">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="46"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NCO-kG-7Pr">
-                                                    <rect key="frame" x="16" y="12" width="343" height="75.5"/>
+                                                    <rect key="frame" x="16" y="12" width="343" height="22"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAc-0E-Jf6">
-                                                            <rect key="frame" x="8" y="8" width="22" height="59.5"/>
-                                                        </button>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="179" translatesAutoresizingMaskIntoConstraints="NO" id="Swc-XW-xNv">
-                                                            <rect key="frame" x="34" y="8" width="301" height="59.5"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Swc-XW-xNv">
+                                                            <rect key="frame" x="8" y="0.0" width="335" height="22"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duj-7Y-SUp">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="67.5" height="59.5"/>
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAc-0E-Jf6">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="22"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="30" id="a0z-fw-7h3"/>
+                                                                        <constraint firstAttribute="width" constant="30" id="yC6-Ix-uhg"/>
+                                                                    </constraints>
+                                                                </button>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Task name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="duj-7Y-SUp">
+                                                                    <rect key="frame" x="55" y="0.0" width="200.5" height="22"/>
                                                                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Priority" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WD8-Wa-aO0">
-                                                                    <rect key="frame" x="246.5" y="0.0" width="54.5" height="59.5"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" ambiguous="YES" text="Priority" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WD8-Wa-aO0">
+                                                                    <rect key="frame" x="280.5" y="0.0" width="54.5" height="22"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -55,13 +59,10 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="Swc-XW-xNv" firstAttribute="top" secondItem="NCO-kG-7Pr" secondAttribute="top" constant="8" id="3CD-3e-4Sy"/>
-                                                        <constraint firstItem="xAc-0E-Jf6" firstAttribute="leading" secondItem="NCO-kG-7Pr" secondAttribute="leading" constant="8" id="ABh-OE-djG"/>
-                                                        <constraint firstItem="Swc-XW-xNv" firstAttribute="leading" secondItem="xAc-0E-Jf6" secondAttribute="trailing" constant="4" id="eH1-eN-PTL"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Swc-XW-xNv" secondAttribute="bottom" constant="8" id="fw0-DI-Pco"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Swc-XW-xNv" secondAttribute="trailing" constant="8" id="ttj-oL-WoO"/>
-                                                        <constraint firstItem="xAc-0E-Jf6" firstAttribute="top" secondItem="NCO-kG-7Pr" secondAttribute="top" constant="8" id="wRG-GR-Nng"/>
-                                                        <constraint firstAttribute="bottom" secondItem="xAc-0E-Jf6" secondAttribute="bottom" constant="8" id="yFb-Co-ivU"/>
+                                                        <constraint firstItem="Swc-XW-xNv" firstAttribute="top" secondItem="NCO-kG-7Pr" secondAttribute="top" id="3CD-3e-4Sy"/>
+                                                        <constraint firstItem="Swc-XW-xNv" firstAttribute="leading" secondItem="NCO-kG-7Pr" secondAttribute="leadingMargin" id="KES-B7-57V"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Swc-XW-xNv" secondAttribute="bottom" id="fw0-DI-Pco"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Swc-XW-xNv" secondAttribute="trailing" id="ttj-oL-WoO"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -176,6 +177,9 @@
                                                         <date key="date" timeIntervalSinceReferenceDate="615063638.35628295">
                                                             <!--2020-06-28 19:00:38 +0000-->
                                                         </date>
+                                                        <connections>
+                                                            <action selector="taskValueChangedDatePicker:forEvent:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="R5V-Qm-pze"/>
+                                                        </connections>
                                                     </datePicker>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

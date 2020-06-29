@@ -23,8 +23,17 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     var isExsisting = false
     var indexPath: Int?
     
+    var taskDateTime : String = ""
     let taskDate = Date()
     var taskUUID: String = ""
+    //    var datePicker : UIDatePicker?
+    
+        var currDateTime : Date?
+    
+    let defaults = UserDefaults.standard
+    struct keys {
+        static let taskCatList = "taskCatList"
+    }
     
     var managedObjectContext: NSManagedObjectContext? {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -32,7 +41,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Date: ", taskDate)
+        
+        getdate()
         hideKeyboardWhenTappedAround()
         
         // Load data from TableView
@@ -55,9 +65,56 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         // Delegates
         taskNameLabel.delegate = self
         taskDescriptionLabel.delegate = self
+        
+        
+        
+        // Uderdefaults Category save array
+        let taskCat = ["Work", "School","Others"]
+        defaults.set(taskCat,forKey: keys.taskCatList)
+        
+        // retrieve Userdefaults
+//        let defaults = UserDefaults.standard
+//        let myarray = defaults.stringArray(forKey: keys.taskCatList) ?? [String]()
+        
 
         // Do any additional setup after loading the view.
+        
+        
+
+        currentDate()
     }
+    
+    
+    // date and time
+    func currentDate(){
+        let currentDateTime = Date()
+        let formatter = DateFormatter()
+        formatter.timeStyle = .medium
+        formatter.dateStyle = .long
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        let datetimestring = formatter.string(from: currentDateTime)
+        currDateTime =  currentDateTime
+        print("Current Date and time : ",datetimestring)
+    }
+    
+    
+    func getdate(){
+        taskDatePicker?.datePickerMode = .dateAndTime
+        taskDatePicker.minimumDate = currDateTime
+        taskDatePicker.maximumDate = Date.calculateDate(day: 31, month: 12, year: 2099, hour: 0, minute: 0)
+    }
+    // date and time end ====
+    
+
+    @IBAction func taskValueChangedDatePicker(_ sender: UIDatePicker, forEvent event: UIEvent) {
+        print(sender.date.getDue().day)
+        taskDateTime = gettaskDate(date: sender.date)
+        taskDateLabel.text = taskDateTime
+    }
+    
+    
+    
+    
     
     // Core data
     func saveToCoreData(completion: @escaping ()->Void){
@@ -97,7 +154,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     
                     task.taskName = taskName
                     task.taskDesc = taskDescription
-                    task.taskDate = taskDate
+                    task.taskDate = taskDateTime
 //                    task.taskCategory = taskCatSelected
                     
                     saveToCoreData() {
@@ -168,11 +225,6 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     }
     
     
-
-    
-
-    
-
     
     // MARK: - Navigation
 
@@ -201,9 +253,9 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let myString = formatter.string(from: date)
         let yourDate = formatter.date(from: myString)
-        formatter.dateFormat = "EEEE, MMM d, yyyy, hh:mm:ss"
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
         let taskDate = formatter.string(from: yourDate!)
-        print(taskDate)
+        print("datetimePicter: ",taskDate)
         return taskDate
     }
 }
