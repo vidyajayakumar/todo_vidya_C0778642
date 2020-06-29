@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A744E11F24A9DECA0083907A /* totoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E11E24A9DECA0083907A /* totoTableViewController.swift */; };
+		A744E12124A9E6D50083907A /* todoTableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A744E12024A9E6D50083907A /* todoTableTableViewCell.swift */; };
 		A74CB3B224A9045300698145 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CB3B124A9045300698145 /* AppDelegate.swift */; };
 		A74CB3B424A9045300698145 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74CB3B324A9045300698145 /* ViewController.swift */; };
 		A74CB3B724A9045300698145 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A74CB3B524A9045300698145 /* Main.storyboard */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A744E11E24A9DECA0083907A /* totoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = totoTableViewController.swift; sourceTree = "<group>"; };
+		A744E12024A9E6D50083907A /* todoTableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todoTableTableViewCell.swift; sourceTree = "<group>"; };
 		A74CB3AE24A9045300698145 /* todo_vidya_C0778642.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todo_vidya_C0778642.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A74CB3B124A9045300698145 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A74CB3B324A9045300698145 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				A74CB3B124A9045300698145 /* AppDelegate.swift */,
+				A744E12024A9E6D50083907A /* todoTableTableViewCell.swift */,
 				A74CB3B324A9045300698145 /* ViewController.swift */,
+				A744E11E24A9DECA0083907A /* totoTableViewController.swift */,
 				A74CB3B524A9045300698145 /* Main.storyboard */,
 				A74CB3BB24A9045500698145 /* Assets.xcassets */,
 				A74CB3BD24A9045500698145 /* LaunchScreen.storyboard */,
@@ -139,6 +145,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A74CB3B424A9045300698145 /* ViewController.swift in Sources */,
+				A744E12124A9E6D50083907A /* todoTableTableViewCell.swift in Sources */,
+				A744E11F24A9DECA0083907A /* totoTableViewController.swift in Sources */,
 				A74CB3B224A9045300698145 /* AppDelegate.swift in Sources */,
 				A74CB3BA24A9045300698145 /* todo_vidya_C0778642.xcdatamodeld in Sources */,
 			);
@@ -294,7 +302,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "vidya.todo-vidya-C0778642";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -311,7 +319,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "vidya.todo-vidya-C0778642";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
