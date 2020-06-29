@@ -178,7 +178,7 @@
                                                             <!--2020-06-28 19:00:38 +0000-->
                                                         </date>
                                                         <connections>
-                                                            <action selector="taskValueChangedDatePicker:forEvent:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="R5V-Qm-pze"/>
+                                                            <action selector="taskValueChangedDatePicker:forEvent:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="EJ3-cw-a7N"/>
                                                         </connections>
                                                     </datePicker>
                                                 </subviews>
@@ -203,6 +203,9 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="rqI-q5-p05"/>
                                                         </constraints>
+                                                        <connections>
+                                                            <action selector="taskNotifySwitchChanged:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="nuK-nL-XeK"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                                 <constraints>
@@ -216,6 +219,9 @@
                                                     <segment title="Normal"/>
                                                     <segment title="Low"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="taskSegChanged:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="e4v-wW-iKo"/>
+                                                </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="46s-Ey-Zs1">
                                                 <rect key="frame" x="0.0" y="521" width="343" height="50"/>
@@ -295,7 +301,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d1h-gA-sCc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="mvL-v4-fpm">
                     <connections>
-                        <action selector="taskShowDatePicker:" destination="Qjg-gP-7ZV" id="Hgk-zD-zk3"/>
+                        <action selector="ShowDatePicker:" destination="Qjg-gP-7ZV" id="VpD-Oe-Kfc"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

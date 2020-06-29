@@ -26,9 +26,15 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     var taskDateTime : String = ""
     let taskDate = Date()
     var taskUUID: String = ""
+    var taskPriority : String = "Normal"
+    var taskNotify : Bool = true
+    var taskDone : Bool = false
     //    var datePicker : UIDatePicker?
     
-        var currDateTime : Date?
+    
+    let formatter = DateFormatter()
+    var currDateTime : Date?
+    let currentDateTime = Date()
     
     let defaults = UserDefaults.standard
     struct keys {
@@ -43,20 +49,40 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         super.viewDidLoad()
         
         getdate()
+        currentDate()
+        taskDatePicker.isHidden = true
         hideKeyboardWhenTappedAround()
         
         // Load data from TableView
         if let task = task {
             taskNameLabel.text = task.taskName
             taskDescriptionLabel.text = task.taskDesc
-//            taskDateLabel.text = String.init(task.taskDate?)
+            taskDateLabel.text = task.taskDate
+            taskNotifySwitch.isOn = task.taskNotify
+            
+            if(task.taskPriority == "High")
+            {   taskPrioritySegment.selectedSegmentIndex = 0
+            } else if(task.taskPriority == "Normal"){
+                taskPrioritySegment.selectedSegmentIndex = 1
+            }else{
+                taskPrioritySegment.selectedSegmentIndex = 2
+            }
+            let date: String = String(task.taskDate!)
+            let temp = stringToDate(dateString: date)
+            
+            let timePicker = taskDatePicker
+            timePicker?.setDate(temp, animated: true)
+
+            print("TaskDate label: ", taskDateLabel.text as Any)
         }
         else{    // Creating new
-            taskDateLabel.text = String(describing: taskDate)
-            // TODO: load Map location
+            taskDateLabel.text = gettaskDate(date: currentDateTime)
             taskUUID = UUID().uuidString
-            print(taskUUID)
+            
+            print("TaskDate label: ", taskDateLabel.text as Any)
+            
         }
+        // Load data end
         
         if taskNameLabel.text != "" {
             isExsisting = true
@@ -67,9 +93,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         taskDescriptionLabel.delegate = self
         
         
-        
         // Uderdefaults Category save array
-        let taskCat = ["Work", "School","Others"]
+        let taskCat = ["Work", "School","Shopping","Bucket List","Personal","Others","Archived"]
         defaults.set(taskCat,forKey: keys.taskCatList)
         
         // retrieve Userdefaults
@@ -78,17 +103,11 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         
 
         // Do any additional setup after loading the view.
-        
-        
-
-        currentDate()
     }
     
     
     // date and time
     func currentDate(){
-        let currentDateTime = Date()
-        let formatter = DateFormatter()
         formatter.timeStyle = .medium
         formatter.dateStyle = .long
         formatter.dateFormat = "yyyy-MM-dd hh:mm a"
@@ -100,19 +119,73 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     func getdate(){
         taskDatePicker?.datePickerMode = .dateAndTime
-        taskDatePicker.minimumDate = currDateTime
+        taskDatePicker.minimumDate = currentDateTime
         taskDatePicker.maximumDate = Date.calculateDate(day: 31, month: 12, year: 2099, hour: 0, minute: 0)
     }
+    
+    // Date
+    func gettaskDate(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let myString = formatter.string(from: date)
+        let yourDate = formatter.date(from: myString)
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        let taskDate = formatter.string(from: yourDate!)
+        print("datetimePicter: ",taskDate)
+        return taskDate
+    }
+    
+    func stringToDate(dateString : String) -> Date{
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        return formatter.date(from: dateString)!
+    }
+    
     // date and time end ====
     
 
     @IBAction func taskValueChangedDatePicker(_ sender: UIDatePicker, forEvent event: UIEvent) {
-        print(sender.date.getDue().day)
+//        print(sender.date.getDue().day)
         taskDateTime = gettaskDate(date: sender.date)
         taskDateLabel.text = taskDateTime
     }
     
+    // Segmented Control
+    @IBAction func taskSegChanged(_ sender: Any) {
+        switch taskPrioritySegment.selectedSegmentIndex
+        {
+        case 0:
+           taskPriority = "High"
+        case 1:
+            taskPriority = "Normal"
+        case 2:
+            taskPriority = "Low"
+        default:
+            break;
+        }
+        print("taskPriority",taskPriority )
+    }
+    // Segmented Control end
     
+    // Notify switch
+    @IBAction func taskNotifySwitchChanged(_ sender: UISwitch) {
+        if sender.isOn{
+            taskNotify = true
+        } else{
+            taskNotify = false
+        }
+        print("taskNotidy :", taskNotify)
+    }
+    
+    //notidy switch end
+    
+    
+    //Category select
+    
+//    for (let i=0; i<cat; <#increment#>) {
+//    <#statements#>
+//    }
+    //Category Selected
     
     
     
@@ -133,6 +206,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     @IBAction func taskShowDatePicker(_ sender: Any) {
     }
+    
+    // Add data
     @IBAction func AddTaskButton(_ sender: Any) {
         if taskNameLabel.text == "" || taskNameLabel.text == "Task Name" || taskDescriptionLabel.text == "" || taskDescriptionLabel.text == "Task Description" {
             
@@ -143,18 +218,24 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             
             self.present(alertController, animated: true, completion: nil)
             
-        } else { //CREATE
+        }
+         //CREATE
+        else {
             if (isExsisting == false) {
                 let taskName = taskNameLabel.text
                 let taskDescription = taskDescriptionLabel.text
+                let taskDateTime = taskDateLabel.text
                 
                 
                 if let moc = managedObjectContext {
                     let task = Task(context: moc)
                     
-                    task.taskName = taskName
-                    task.taskDesc = taskDescription
-                    task.taskDate = taskDateTime
+                    task.taskName       = taskName
+                    task.taskDesc       = taskDescription
+                    task.taskPriority   = taskPriority
+                    task.taskDate       = taskDateTime
+                    task.taskNotify     = taskNotify
+                    task.taskDone       = taskDone
 //                    task.taskCategory = taskCatSelected
                     
                     saveToCoreData() {
@@ -163,24 +244,24 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                         
                         if isPresentingInAddFluidPatientMode {
                             self.dismiss(animated: true, completion: nil)
-                            
                         }
-                            
                         else {
                             self.navigationController!.popViewController(animated: true)
                         }
                     }
                 }
             }
-            else if (isExsisting == true) { // UPDATE
+            // UPDATE
+            else if (isExsisting == true) {
                 
                 let task = self.task
                 
                 let managedObject = task
                 managedObject!.setValue(taskNameLabel.text, forKey: "taskName")
                 managedObject!.setValue(taskDescriptionLabel.text, forKey: "taskDesc")
-                
-
+                managedObject!.setValue(taskDateTime, forKey: "taskDate")
+                managedObject!.setValue(taskPriority, forKey: "taskPriority")
+                managedObject!.setValue(taskNotify, forKey: "taskNotify")
                 
                 do {
                     try context.save()
@@ -189,9 +270,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     
                     if isPresentingInAddFluidPatientMode {
                         self.dismiss(animated: true, completion: nil)
-                        
                     }
-                        
                     else {
                         self.navigationController!.popViewController(animated: true)
                     }
@@ -200,17 +279,9 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     print("Failed to update existing task.")
                 }
             }
-            
         }
-        
-        
-        
-        
-        
-        
-        
-    } // Addtask Button ====
-    
+    }
+    // Addtask Button ====
     
     
     @IBAction func cancelTaskButton(_ sender: Any) {
@@ -224,8 +295,6 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         }
     }
     
-    
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -233,6 +302,16 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+    var i=0
+    // Show DatePicker
+    @IBAction func ShowDatePicker(_ sender: UITapGestureRecognizer) {
+        taskDatePicker.isHidden = false
+        i+=1
+        print("Tapped: ", i)
+    }
+    
+    // shown
+    
     
     // Dismiss keyboard =====
     func hideKeyboardWhenTappedAround() {
@@ -247,81 +326,11 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     // ======
     
-    // Date
-    func gettaskDate(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let myString = formatter.string(from: date)
-        let yourDate = formatter.date(from: myString)
-        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
-        let taskDate = formatter.string(from: yourDate!)
-        print("datetimePicter: ",taskDate)
-        return taskDate
-    }
-}
-extension Date {
-    func toSeconds() -> Int64! {
-        return Int64((self.timeIntervalSince1970).rounded())
-    }
-    
-    init(seconds:Int64!) {
-        self = Date(timeIntervalSince1970: TimeInterval(Double.init(seconds)))
-    }
-    
-    
-    func dateComponents() -> DateComponents {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: self)
-        return components
-    }
-    
-    func dateComponentsToNotify() -> DateComponents {
-        let calendar = Calendar.current
-        let newDate = calendar.date(byAdding: .minute, value: -30, to: self)
-        guard let date = newDate else {
-            return calendar.dateComponents([.year, .month, .day, .hour, .minute], from: self)
+
+    // TextView Begin
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if (textView.text == "Task Description") {
+            textView.text = ""
         }
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-        return components
-    }
-    
-    func isEqual(currentDate: Date) -> Bool {
-        if self.dateComponents().day == currentDate.dateComponents().day {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func isPast(today currentDate: Date) -> Bool {
-        if self > currentDate {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    static func from(hour: Int, minutes: Int, year: Int, month: Int, day: Int) -> Date? {
-        let calendar = Calendar(identifier: .gregorian)
-        var dateComponents = DateComponents()
-        dateComponents.hour = hour
-        dateComponents.minute = minutes
-        dateComponents.year = year
-        dateComponents.month = month
-        dateComponents.day = day
-        return calendar.date(from: dateComponents) ?? nil
-    }
-    
-    func string(format: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = format
-        return formatter.string(from: self)
-    }
-    
-    func dateFormatterString() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.dateStyle = .long
-        return dateFormatter.string(from: self)
     }
 }
