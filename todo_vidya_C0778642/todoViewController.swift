@@ -16,6 +16,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     @IBOutlet weak var taskPrioritySegment: UISegmentedControl!
     @IBOutlet weak var taskAddButton: UIButton!
     @IBOutlet weak var taskCategoryLabel: UILabel!
+    @IBOutlet weak var taskDoneSwitch: UISwitch!
+    @IBOutlet weak var donelabel: UILabel!
     
     
     var tasksFetchedResultsController: NSFetchedResultsController<Task>!
@@ -38,6 +40,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     let currentDateTime = Date()
     var taskCatSelected: String = "Others"
     
+    
     let defaults = UserDefaults.standard
     struct keys {
         static let taskCatList = "taskCatList"
@@ -53,6 +56,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         getdate()
         currentDate()
         taskDatePicker.isHidden = true
+        donelabel.isHidden = true
+        taskDoneSwitch.isHidden=true
         hideKeyboardWhenTappedAround()
         
         // Load data from TableView
@@ -62,6 +67,10 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             taskDateLabel.text = task.taskDate
             taskNotifySwitch.isOn = task.taskNotify
             taskCategoryLabel.text = task.taskCat
+            donelabel.isHidden = false
+            taskDoneSwitch.isHidden=false
+            taskDoneSwitch.isOn = task.taskDone
+            
             
             if(task.taskPriority == "High")
             {   taskPrioritySegment.selectedSegmentIndex = 0
@@ -76,6 +85,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             timePicker?.setDate(temp, animated: true)
 
             print("TaskDate label: ", taskDateLabel.text as Any)
+            
         }
         else{    // Creating new
             taskDateLabel.text = gettaskDate(date: currentDateTime)
@@ -180,7 +190,18 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         print("taskNotify :", taskNotify)
     }
     
+    @IBAction func taskDoneSwitchChanged(_ sender: UISwitch) {
+        
+        if sender.isOn{
+            taskDone = true
+        } else{
+            taskDone = false
+        }
+        print("taskNotify :", taskNotify)
+    }
     //notidy switch end
+    
+    
     
     
     //Category select
@@ -312,7 +333,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                 managedObject!.setValue(taskDateTime, forKey: "taskDate")
                 managedObject!.setValue(taskPriority, forKey: "taskPriority")
                 managedObject!.setValue(taskNotify, forKey: "taskNotify")
-                 managedObject!.setValue(taskCatSelected, forKey: "taskCat")
+                managedObject!.setValue(taskCatSelected, forKey: "taskCat")
+                managedObject!.setValue(taskDone, forKey: "taskDone")
                 
                 do {
                     try context.save()

@@ -50,6 +50,7 @@ class todoTableViewCell: UITableViewCell {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd hh:mm a"
         return formatter.date(from: dateString)!
+        
     }
     //Date end
     
@@ -75,7 +76,7 @@ class todoTableViewCell: UITableViewCell {
         
         let due = stringToDate(dateString: task.taskDate!)
         let currDate = stringToDate(dateString: gettaskDate(date: currentDateTime))
-        if due<currDate
+        if due < currDate
         {
             shadowView.layer.backgroundColor = UIColor.red.cgColor
         }

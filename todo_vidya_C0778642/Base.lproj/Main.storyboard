@@ -94,15 +94,28 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Tasks" id="bBj-Cy-1tf">
                         <barButtonItem key="backBarButtonItem" title=" " id="wr8-4I-FQH"/>
+                        <barButtonItem key="leftBarButtonItem" title="sort" id="E1D-7M-ray">
+                            <connections>
+                                <action selector="taskSortButtonClicked:" destination="18H-Gi-7Im" id="4vn-ow-aQH"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="r0M-sL-TKW">
                                 <connections>
                                     <segue destination="ht6-Bh-Ecc" kind="show" identifier="AddItems" id="UIb-jO-yxS"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="organize" id="fxH-Mr-qB5"/>
+                            <barButtonItem systemItem="organize" id="fxH-Mr-qB5">
+                                <connections>
+                                    <action selector="taskCategoySort:" destination="18H-Gi-7Im" id="AzO-TE-zNq"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <connections>
+                        <outlet property="taskSortButton" destination="E1D-7M-ray" id="4QN-Ba-AMy"/>
+                        <outlet property="tastCatBbutton" destination="fxH-Mr-qB5" id="hiC-pJ-X6A"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FMS-8D-Ewm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -165,7 +178,7 @@
                                                 </connections>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQA-MN-pjp">
-                                                <rect key="frame" x="0.0" y="169" width="343" height="221"/>
+                                                <rect key="frame" x="0.0" y="169" width="343" height="191"/>
                                                 <subviews>
                                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="RjR-Gp-Chw">
                                                         <rect key="frame" x="0.0" y="8" width="343" height="216"/>
@@ -185,7 +198,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalCentering" alignment="center" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="IES-XC-azJ">
-                                                <rect key="frame" x="0.0" y="398" width="343" height="38"/>
+                                                <rect key="frame" x="0.0" y="368" width="343" height="38"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeN-WZ-4Id">
                                                         <rect key="frame" x="0.0" y="10.5" width="89.5" height="17"/>
@@ -208,20 +221,35 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleAspectFit" distribution="equalCentering" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lgm-v0-qbV">
-                                                <rect key="frame" x="0.0" y="444" width="117.5" height="33"/>
+                                                <rect key="frame" x="0.0" y="414" width="343" height="63"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iMm-SV-Z9k">
-                                                        <rect key="frame" x="0.0" y="8" width="63.5" height="17"/>
+                                                        <rect key="frame" x="0.0" y="23" width="63.5" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Others" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HKd-Ql-nKA">
-                                                        <rect key="frame" x="73.5" y="8" width="44" height="17"/>
+                                                        <rect key="frame" x="105.5" y="23" width="44" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|   Done: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jmb-dJ-FBW">
+                                                        <rect key="frame" x="194" y="23" width="58" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vbZ-R6-85I">
+                                                        <rect key="frame" x="294" y="19" width="51" height="25"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="25" id="JMT-Hi-cvz"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <action selector="taskDoneSwitchChanged:" destination="Qjg-gP-7ZV" eventType="valueChanged" id="zeK-mI-4Ft"/>
+                                                        </connections>
+                                                    </switch>
                                                 </subviews>
                                             </stackView>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ftk-1P-EOY">
@@ -259,6 +287,7 @@
                                             <constraint firstAttribute="trailing" secondItem="dQA-MN-pjp" secondAttribute="trailing" id="En7-Fb-yKX"/>
                                             <constraint firstAttribute="trailing" secondItem="46s-Ey-Zs1" secondAttribute="trailing" id="IEo-vB-VwU"/>
                                             <constraint firstItem="dQA-MN-pjp" firstAttribute="leading" secondItem="rvj-lh-WGJ" secondAttribute="leading" id="IKY-VS-vNv"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="lgm-v0-qbV" secondAttribute="trailing" id="Kpk-3N-3ni"/>
                                             <constraint firstAttribute="trailing" secondItem="925-el-ojb" secondAttribute="trailing" id="Nxy-a4-fpU"/>
                                             <constraint firstItem="dQA-MN-pjp" firstAttribute="top" secondItem="DhL-i7-OLk" secondAttribute="bottom" constant="8" id="Sz7-Sr-ghW"/>
                                             <constraint firstItem="IES-XC-azJ" firstAttribute="leading" secondItem="rvj-lh-WGJ" secondAttribute="leading" id="dCy-jo-Eoo"/>
@@ -303,12 +332,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="donelabel" destination="Jmb-dJ-FBW" id="9hl-zE-8eE"/>
                         <outlet property="taskAddButton" destination="46s-Ey-Zs1" id="VaV-9U-WLq"/>
                         <outlet property="taskCatSelectorButton" destination="2Rk-OR-ykq" id="iWE-GC-2Tl"/>
                         <outlet property="taskCategoryLabel" destination="HKd-Ql-nKA" id="qJ1-lA-Xsw"/>
                         <outlet property="taskDateLabel" destination="5Eb-wh-aun" id="wLW-m1-2SB"/>
                         <outlet property="taskDatePicker" destination="RjR-Gp-Chw" id="lBf-g7-eSo"/>
                         <outlet property="taskDescriptionLabel" destination="5Ia-Jr-oeu" id="okk-wE-ee1"/>
+                        <outlet property="taskDoneSwitch" destination="vbZ-R6-85I" id="MGp-A4-w5C"/>
                         <outlet property="taskNameLabel" destination="925-el-ojb" id="0Lx-N4-2bB"/>
                         <outlet property="taskNotifySwitch" destination="RRD-wn-xv0" id="Grr-HN-AN8"/>
                         <outlet property="taskPrioritySegment" destination="Ftk-1P-EOY" id="sTl-HW-mZj"/>

@@ -2,11 +2,17 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class todoTableViewController: UITableViewController {
 
     var tasks = [Task]()
     
+    let searchController = UISearchController(searchResultsController: nil)
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    @IBOutlet weak var taskSortButton: UIBarButtonItem!
+    @IBOutlet weak var tastCatBbutton: UIBarButtonItem!
     let defaults = UserDefaults.standard
     struct keys {
         static let taskCatList = "taskCatList"
@@ -20,8 +26,14 @@ class todoTableViewController: UITableViewController {
         super.viewDidLoad()
         
         retrieveTasks()
-        print("Count : ",tasks.count)
-        
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.obscuresBackgroundDuringPresentation = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        let taskCat = ["Work", "School","Shopping","Bucket List","Personal","Others"]
+        defaults.set(taskCat,forKey: keys.taskCatList)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -75,66 +87,82 @@ class todoTableViewController: UITableViewController {
     }
     // Table Load end ===
     
+   // Sort
+    
+    @IBAction func taskSortButtonClicked(_ sender: Any) {
+        filterList()
+    }
+    
+    
+    func filterList() {
+        tasks.sorted() { UIContentSizeCategory(rawValue: $0.taskName!) > UIContentSizeCategory(rawValue: $1.taskName!) }
+        tableView.reloadData(); // notify the table view the data has changed
+    }
+    // sort end
+    
     //Cat
     
-//    @IBAction func taskCatClicked(_ sender: Any) {
-//        categorySelect()
-//    }
-//    func categorySelect(){
-//        //retrieve Userdefaults
-//        func taskSelCat(){
-//            let taskCat  =  defaults.stringArray(forKey: keys.taskCatList)!
-//            let categoryController = UIAlertController(title: "Select Category", message: "", preferredStyle: .actionSheet)
-//            for var i in taskCat
-//            {   let action = UIAlertAction(title: "\(i)", style: .default) { (action) in
-//                self.taskCatSelect(taskCategory: action.title!)}
-//                categoryController.addAction(action)
-//                print(i)
-//            }
-//            let action = UIAlertAction(title: "Archive", style: .default) { (action) in
-//                self.taskCatSelArchive(Cat: true)}
-//            categoryController.addAction(action)
-//            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
-//            categoryController.addAction(cancelAction)
-//            present(categoryController, animated: true, completion: nil)
-//            
-//        }
-//        
-//    }
-//    
-//    func taskCatSelArchive(Cat: Bool){
-//        var predicate: NSPredicate = NSPredicate()
-//        predicate = NSPredicate(format: "taskDone contains[c] 'true'")
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//        let managedObjectContext = appDelegate.persistentContainer.viewContext
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
-//        fetchRequest.predicate = predicate
-//        do {
-//            tasks = try managedObjectContext.fetch(fetchRequest) as! [NSManagedObject] as! [Task]
-//        } catch let error as NSError {
-//            print("Could not fetch. \(error)")
-//        }
-//        tableView.reloadData()
-//        
-//    }
-//    
-//    func taskCatSelect(taskCategory: String){
-//        
-//        print(taskCategory)
-//        
-//        var predicate: NSPredicate = NSPredicate()
-//        predicate = NSPredicate(format: "taskCat contains[c] '\(taskCategory)'")
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//        let managedObjectContext = appDelegate.persistentContainer.viewContext
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
-//        fetchRequest.predicate = predicate
-//        do {
-//            tasks = try managedObjectContext.fetch(fetchRequest) as! [NSManagedObject] as! [Task]
-//        } catch let error as NSError {
-//            print("Could not fetch. \(error)")
-//        }
-//        tableView.reloadData()
-//    }
+    @IBAction func taskCategoySort(_ sender: Any) {
+        categorySelect()
+    }
+    @IBAction func taskCatClicked(_ sender: Any) {
+        categorySelect()
+    }
+    func categorySelect(){
+        //retrieve Userdefaults
+            let taskCat  =  defaults.stringArray(forKey: keys.taskCatList)!
+            let categoryController = UIAlertController(title: "Select Category", message: "", preferredStyle: .actionSheet)
+            for var i in taskCat
+            {   let action = UIAlertAction(title: "\(i)", style: .default) { (action) in
+                self.taskCatSelect(taskCategory: action.title!)}
+                categoryController.addAction(action)
+                print(i)
+            }
+            
+            let actionArchive = UIAlertAction(title: "Archive", style: .default) { (action) in
+                self.taskCatSelArchive(Cat: true)}
+            categoryController.addAction(actionArchive)
+        let ViewALL = UIAlertAction(title: "View All", style: .default) { (action) in
+            self.retrieveTasks()}
+        categoryController.addAction(ViewALL)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+            categoryController.addAction(cancelAction)
+            present(categoryController, animated: true, completion: nil)
+    }
+    
+    func taskCatSelArchive(Cat: Bool){
+        var predicate: NSPredicate = NSPredicate()
+        predicate = NSPredicate(format: "taskDone contains[c] 'true'")
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
+        fetchRequest.predicate = predicate
+        do {
+            tasks = try managedObjectContext.fetch(fetchRequest) as! [NSManagedObject] as! [Task]
+        } catch let error as NSError {
+            print("Could not fetch. \(error)")
+        }
+        tableView.reloadData()
+        
+    }
+    
+    func taskCatSelect(taskCategory: String){
+        
+        print(taskCategory)
+        
+        var predicate: NSPredicate = NSPredicate()
+        predicate = NSPredicate(format: "taskCat contains[c] '\(taskCategory)'")
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
+        fetchRequest.predicate = predicate
+        do {
+            tasks = try managedObjectContext.fetch(fetchRequest) as! [NSManagedObject] as! [Task]
+        } catch let error as NSError {
+            print("Could not fetch. \(error)")
+        }
+        tableView.reloadData()
+    }
     //Cat end
     
     // MARK: NSCoding
@@ -193,4 +221,33 @@ class todoTableViewController: UITableViewController {
     }
 
 
+}
+extension todoTableViewController: UISearchBarDelegate, UISearchDisplayDelegate{
+    // Search   =========================================
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if !searchText.isEmpty {
+            var predicate: NSPredicate = NSPredicate()
+            predicate = NSPredicate(format: "taskName contains[c] '\(searchText)' OR taskDesc contains[c] '\(searchText)'")
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let managedObjectContext = appDelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
+            fetchRequest.predicate = predicate
+            do {
+                tasks = try managedObjectContext.fetch(fetchRequest) as! [NSManagedObject] as! [Task]
+            } catch let error as NSError {
+                print("Could not fetch. \(error)")
+            }
+        }
+        else{
+            retrieveTasks()
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        retrieveTasks()
+    }
+    //    Search end =========================================
 }
