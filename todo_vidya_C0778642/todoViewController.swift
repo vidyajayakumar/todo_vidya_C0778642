@@ -3,6 +3,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelegate, UINavigationControllerDelegate {
     
@@ -28,7 +29,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
     
     var taskDateTime : String = ""
     let taskDate = Date()
-    var taskUUID: String = ""
+    var taskUUID: UUID = UUID()
     var taskPriority : String = "Normal"
     var taskNotify : Bool = true
     var taskDone : Bool = false
@@ -59,6 +60,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         donelabel.isHidden = true
         taskDoneSwitch.isHidden=true
         hideKeyboardWhenTappedAround()
+        registerLocal()
         
         // Load data from TableView
         if let task = task {
@@ -70,6 +72,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             donelabel.isHidden = false
             taskDoneSwitch.isHidden=false
             taskDoneSwitch.isOn = task.taskDone
+            taskUUID = task.taskUUID ?? UUID()
             
             
             if(task.taskPriority == "High")
@@ -89,7 +92,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         }
         else{    // Creating new
             taskDateLabel.text = gettaskDate(date: currentDateTime)
-            taskUUID = UUID().uuidString
+            taskUUID = UUID()
             
             print("TaskDate label: ", taskDateLabel.text as Any)
             
@@ -116,6 +119,44 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         
 
         // Do any additional setup after loading the view.
+    }
+    
+    
+    
+    //Notification
+    @objc func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                print("Yay!")
+            } else {
+                print("D'oh")
+            }
+        }
+    }
+    
+
+    func scheduleNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = taskNameLabel.text ?? "task Name"
+        content.body = taskDescriptionLabel.text ?? "Task Description"
+        content.categoryIdentifier = "task"
+        content.userInfo = ["customData": "fizzbuzz"]
+        content.sound = UNNotificationSound.default()
+        
+        var dateComponents = DateComponents()
+        dateComponents.year = (getDue(dateString: taskDateTime)).year
+        dateComponents.month = (getDue(dateString: taskDateTime)).month
+        dateComponents.day = (getDue(dateString: taskDateTime)).day
+        dateComponents.hour = (getDue(dateString: taskDateTime)).hour
+        dateComponents.minute = (getDue(dateString: taskDateTime)).minute
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        
+        let request = UNNotificationRequest(identifier: taskUUID.uuidString, content: content, trigger: trigger)
+        center.add(request)
     }
     
     
@@ -152,6 +193,41 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd hh:mm a"
         return formatter.date(from: dateString)!
+    }
+    
+    func getDue(dateString: String) -> (day: Int, month: Int, year: Int, hour: Int, minute: Int){
+        
+        let formatter = DateFormatter()
+       
+        
+        formatter.dateFormat = "d"
+        let temp = formatter.date(from: dateString)!
+        let timeInterval = temp.timeIntervalSince1970
+        let day = Int(timeInterval)
+        
+        
+        formatter.dateFormat = "MM"
+        _ = formatter.date(from: dateString)!
+        let timeInterval1 = temp.timeIntervalSince1970
+        let month = Int(timeInterval1)
+        
+        formatter.dateFormat = "yyyy"
+        let temp2 = formatter.date(from: dateString)!
+        let timeInterval2 = temp2.timeIntervalSince1970
+        let year = Int(timeInterval2)
+        
+        
+        formatter.dateFormat = "HH"
+        let temp3 = formatter.date(from: dateString)!
+        let timeInterval3 = temp3.timeIntervalSince1970
+        let hour = Int(timeInterval3)
+        
+        formatter.dateFormat = "mm"
+        let temp4 = formatter.date(from: dateString)!
+        let timeInterval4 = temp4.timeIntervalSince1970
+        let minute = Int(timeInterval4)
+        
+        return (day, month, year, hour, minute)
     }
     
     // date and time end ====
@@ -308,6 +384,11 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     task.taskNotify     = taskNotify
                     task.taskDone       = taskDone
                     task.taskCat        = taskCatSelected
+                    task.taskUUID       = taskUUID
+                    
+                    if taskNotify{
+                        scheduleNotification()
+                    }
                     
                     saveToCoreData() {
                         
@@ -335,6 +416,10 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                 managedObject!.setValue(taskNotify, forKey: "taskNotify")
                 managedObject!.setValue(taskCatSelected, forKey: "taskCat")
                 managedObject!.setValue(taskDone, forKey: "taskDone")
+                
+                if taskNotify{
+                    scheduleNotification()
+                }
                 
                 do {
                     try context.save()

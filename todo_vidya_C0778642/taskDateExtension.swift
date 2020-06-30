@@ -11,15 +11,23 @@ extension Date {
         return calculatedDate!
     }
     
-    func getDue() -> (day: Int, month: Int, year: Int, hour: Int, minute: Int, second: Int){
+    func getDue(string: String) -> (day: Int, month: Int, year: Int, hour: Int, minute: Int){
+        
         let calendar = Calendar.current
+        
         let day = calendar.component(.day, from: self)
         let month = calendar.component(.month, from: self)
         let year = calendar.component(.year, from: self)
         let hour = calendar.component(.hour, from: self)
         let minute = calendar.component(.minute, from: self)
-        let second = calendar.component(.second, from: self)
-        return (day, month, year, hour, minute, second)
+        return (day, month, year, hour, minute)
+    }
+    func dateformatterDateString(dateString: String) -> NSDate? {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM/dd/yyyy hh:mm a Z"
+        //      dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+        dateFormatter.timeZone = NSTimeZone.local
+        return dateFormatter.date(from: dateString) as NSDate?
     }
     
     
