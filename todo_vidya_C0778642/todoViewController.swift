@@ -200,15 +200,16 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
         let formatter = DateFormatter()
        
         
-        formatter.dateFormat = "d"
+        formatter.dateFormat = "dd"
         let temp = formatter.date(from: dateString)!
         let timeInterval = temp.timeIntervalSince1970
-        let day = Int(timeInterval)
+        let day = Int(timeInterval) //?? 03
+//        let day = 03
         
         
         formatter.dateFormat = "MM"
-        _ = formatter.date(from: dateString)!
-        let timeInterval1 = temp.timeIntervalSince1970
+        let temp1 = formatter.date(from: dateString)!
+        let timeInterval1 = temp1.timeIntervalSince1970
         let month = Int(timeInterval1)
         
         formatter.dateFormat = "yyyy"
@@ -418,7 +419,8 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                 managedObject!.setValue(taskDone, forKey: "taskDone")
                 
                 if taskNotify{
-                    scheduleNotification()
+//                    scheduleNotification()
+                    
                 }
                 
                 do {

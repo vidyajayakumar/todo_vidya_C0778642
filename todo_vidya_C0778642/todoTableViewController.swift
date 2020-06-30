@@ -90,13 +90,22 @@ class todoTableViewController: UITableViewController {
    // Sort
     
     @IBAction func taskSortButtonClicked(_ sender: Any) {
+        
         filterList()
     }
     
     
     func filterList() {
-        tasks.sorted() { UIContentSizeCategory(rawValue: $0.taskName!) > UIContentSizeCategory(rawValue: $1.taskName!) }
-        tableView.reloadData(); // notify the table view the data has changed
+        let fetchreq = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let sort = NSSortDescriptor(key: "taskName", ascending: true)
+        fetchreq.sortDescriptors = [sort]
+        do {
+            tasks = try managedObjectContext.fetch(fetchreq) as! [NSManagedObject] as! [Task]
+        } catch let error as NSError {
+            print("Could not fetch. \(error)")
+        }
+        tableView.reloadData()
     }
     // sort end
     
