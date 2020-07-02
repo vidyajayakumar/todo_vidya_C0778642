@@ -73,6 +73,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
             taskDoneSwitch.isHidden=false
             taskDoneSwitch.isOn = task.taskDone
             taskUUID = task.taskUUID ?? UUID()
+            taskDateTime = task.taskDate!
             
             
             if(task.taskPriority == "High")
