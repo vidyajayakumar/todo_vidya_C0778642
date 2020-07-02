@@ -141,7 +141,7 @@ class todoTableViewController: UITableViewController {
     
     func taskCatSelArchive(Cat: Bool){
         var predicate: NSPredicate = NSPredicate()
-        predicate = NSPredicate(format: "taskDone contains[c] 'true'")
+        predicate = NSPredicate(format: "taskDone contains[c] true")
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedObjectContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Task")
