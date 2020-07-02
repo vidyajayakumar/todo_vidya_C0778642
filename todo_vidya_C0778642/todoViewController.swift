@@ -388,7 +388,7 @@ class todoViewController: UIViewController,UITextFieldDelegate, UITextViewDelega
                     task.taskUUID       = taskUUID
                     
                     if taskNotify{
-                        scheduleNotification()
+//                        scheduleNotification()
                     }
                     
                     saveToCoreData() {
